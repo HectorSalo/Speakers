@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nepal">#90B0C1</color>
+    <color name="wedgewood">#447C9C</color>
+    <color name="deep_sea_green">#0E4B6C</color>
+    <color name="casablanca">#F9AF48</color>
+    <color name="cinnabar">#E74D3C</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
