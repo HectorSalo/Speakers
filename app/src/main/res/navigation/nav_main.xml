@@ -12,11 +12,11 @@
 
     <fragment
         android:id="@+id/navigation_speakers"
-        android:name="com.skysam.speakers.ui.speakers.DashboardFragment"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.skysam.speakers.ui.speakers.SpeakersFragment"
+        tools:layout="@layout/fragment_speakers" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.skysam.speakers.ui.notifications.NotificationsFragment"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_conventions"
+        android:name="com.skysam.speakers.ui.conventions.ConventionsFragment"
+        tools:layout="@layout/fragment_conventions" />
 </navigation>

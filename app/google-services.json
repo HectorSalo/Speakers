@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "971347249409",
+    "project_id": "speakers-d5775",
+    "storage_bucket": "speakers-d5775.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971347249409:android:82897204aa3cc9656e3300",
+        "android_client_info": {
+          "package_name": "com.skysam.speakers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971347249409-6o4daouls68lf5u2mje6stn2ij2m4747.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu2TNIe9qDdjK0mfCQ-SRDxzCwinUfcMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971347249409-6o4daouls68lf5u2mje6stn2ij2m4747.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
