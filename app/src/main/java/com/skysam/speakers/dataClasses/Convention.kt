@@ -9,6 +9,7 @@ import java.util.Date
 data class Convention(
  val id: String,
  var title: String,
+ var image: String,
  var dateA: Date?,
  var dateB: Date?,
  var speeches: List<String>

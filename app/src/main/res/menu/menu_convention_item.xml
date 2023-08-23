@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_view"
+        android:title="@string/text_view_speakers" />
+    <item
+        android:id="@+id/menu_assign_dates"
+        android:title="@string/text_assign_dates" />
+    <item
+        android:id="@+id/menu_assign_speakers"
+        android:title="@string/text_assign_speakers" />
+
+</menu>

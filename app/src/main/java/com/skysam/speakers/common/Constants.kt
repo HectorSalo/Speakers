@@ -17,7 +17,10 @@ object Constants {
  const val TITLE = "title"
  const val DATE_A = "dateA"
  const val DATE_B = "dateB"
- const val PLACE = "place"
+ const val IMAGE = "image"
+ const val CURRENT = "current"
+
+ const val ID_CONVENTION = "idConvention"
 
  const val PREFERENCES = "preferences"
 

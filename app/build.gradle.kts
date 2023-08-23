@@ -42,6 +42,9 @@ android {
 
 dependencies {
 
+    //Librerias externas
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+
     //librerias Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
     implementation ("com.google.firebase:firebase-analytics-ktx")

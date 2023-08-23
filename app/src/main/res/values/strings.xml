@@ -25,9 +25,16 @@
     <!--Errors-->
     <string name="error_field_empty">Campo obligatorio</string>
 
+    <!--Home-->
+    <string name="text_assign_speakers">Asignar/Cambiar oradores</string>
+    <string name="text_view_speakers">Ver oradores</string>
+    <string name="text_assing_complete">Asignaciones de oradores completas</string>
+    <string name="text_assing_incomplete">Faltan %1$s discursos por asignar</string>
+
     <!--Convention-->
     <string name="text_title">Título</string>
     <string name="text_no_dates">Sin fechas definidas</string>
+    <string name="text_assign_dates">Asignar/Cambiar fechas</string>
     <!--New Convention-->
     <string name="text_new_convention">Crear Asamblea</string>
 

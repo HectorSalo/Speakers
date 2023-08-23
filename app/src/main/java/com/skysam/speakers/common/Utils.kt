@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import com.skysam.speakers.BuildConfig
 import java.text.Collator
 import java.text.DateFormat
+import java.util.Calendar
 import java.util.Collections
 import java.util.Comparator
 import java.util.Date
@@ -26,6 +27,13 @@ object Utils {
 
  fun convertDateToString(value: Date): String {
   return DateFormat.getDateInstance().format(value)
+ }
+
+ fun convertRangeDateToString(date1: Date, date2: Date): String {
+  val calendar = Calendar.getInstance()
+  calendar.time = date1
+  val day1 = calendar.get(Calendar.DAY_OF_MONTH)
+  return "$day1 - ${convertDateToString(date2)}"
  }
 
  /*fun organizedAlphabeticList(list: MutableList<Booking>): MutableList<Booking> {

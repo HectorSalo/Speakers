@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.Speakers" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/deep_sea_green</item>
+        <item name="colorPrimary">@color/cinnabar</item>
         <item name="colorPrimaryVariant">@color/deep_sea_green</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/nepal</item>
-        <item name="colorSecondaryVariant">@color/nepal</item>
+        <item name="colorSecondary">@color/casablanca</item>
+        <item name="colorSecondaryVariant">@color/casablanca</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>

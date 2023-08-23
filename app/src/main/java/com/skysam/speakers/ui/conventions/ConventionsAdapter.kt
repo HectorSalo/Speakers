@@ -9,6 +9,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.skysam.speakers.R
 import com.skysam.speakers.common.Utils
@@ -19,7 +20,7 @@ import com.skysam.speakers.dataClasses.Convention
  */
 
 class ConventionsAdapter: RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() {
-    lateinit var context: Context
+    private lateinit var context: Context
     private var conventions = listOf<Convention>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConventionsAdapter.ViewHolder {
@@ -36,21 +37,27 @@ class ConventionsAdapter: RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() 
             Utils.convertDateToString(item.dateA!!), Utils.convertDateToString(item.dateB!!))
         else context.getString(R.string.text_no_dates)
 
-        /*holder.menu.setOnClickListener {
-            val popMenu = PopupMenu(context, holder.menu)
-            popMenu.inflate(R.menu.menu_bookings_item)
+        Glide.with(context)
+            .load(item.image)
+            .centerCrop()
+            .circleCrop()
+            .placeholder(R.drawable.ic_convention_24)
+            .into(holder.image)
+
+        holder.card.setOnClickListener {
+            val popMenu = PopupMenu(context, holder.card)
+            popMenu.inflate(R.menu.menu_convention_item)
 
             popMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.menu_edit -> onClick.edit(item)
-                    R.id.menu_delete -> onClick.delete(item)
+                    R.id.menu_assign_speakers -> {}
+                    R.id.menu_assign_dates -> {}
+                    R.id.menu_view -> {}
                 }
                 false
             }
             popMenu.show()
         }
-
-        holder.card.setOnClickListener { onClick.view(item) }*/
     }
 
     override fun getItemCount(): Int = conventions.size
@@ -58,6 +65,7 @@ class ConventionsAdapter: RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.tv_title)
         val date: TextView = view.findViewById(R.id.tv_date)
+        val image: ImageView = view.findViewById(R.id.iv_image)
         val card: MaterialCardView = view.findViewById(R.id.card)
     }
 
