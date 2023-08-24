@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.skysam.speakers.R
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Convention
+import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.dataClasses.Speech
 import com.skysam.speakers.databinding.FragmentHomeBinding
 import java.util.Date
@@ -20,6 +21,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by activityViewModels()
     private var speeches = listOf<Speech>()
+    private val speakers = listOf<Speaker>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,17 +66,15 @@ class HomeFragment : Fragment() {
         binding.tvTitle1.text = convention.title
         binding.tvDates1.text = if (convention.dateA == null || convention.dateB == null)
             getString(R.string.text_no_dates)
-        else Utils.convertRangeDateToString(convention.dateA!!, convention.dateB!!)
+        else "${Utils.convertDateToString(convention.dateA!!)} / ${Utils.convertDateToString(convention.dateB!!)}"
         val speechesFromConvention = mutableListOf<Speech>()
         for (speech in speeches) {
             if (speech.conventionId == convention.id) {
                 speechesFromConvention.add(speech)
             }
         }
-        var totalSpeakers = 0
-        speechesFromConvention.forEach {
-            totalSpeakers += it.listSpeakers.size
-        }
+        var totalSpeakers = speakers.size
+
         val totalSpeeches = speechesFromConvention.size * 2
 
         if (totalSpeeches == totalSpeakers) {
@@ -101,17 +101,14 @@ class HomeFragment : Fragment() {
         binding.tvTitle2.text = convention.title
         binding.tvDates2.text = if (convention.dateA == null || convention.dateB == null)
             getString(R.string.text_no_dates)
-        else Utils.convertRangeDateToString(convention.dateA!!, convention.dateB!!)
+        else "${Utils.convertDateToString(convention.dateA!!)} / ${Utils.convertDateToString(convention.dateB!!)}"
         val speechesFromConvention = mutableListOf<Speech>()
         for (speech in speeches) {
             if (speech.conventionId == convention.id) {
                 speechesFromConvention.add(speech)
             }
         }
-        var totalSpeakers = 0
-        speechesFromConvention.forEach {
-            totalSpeakers += it.listSpeakers.size
-        }
+        var totalSpeakers = speakers.size
         val totalSpeeches = speechesFromConvention.size * 2
 
         if (totalSpeeches == totalSpeakers) {

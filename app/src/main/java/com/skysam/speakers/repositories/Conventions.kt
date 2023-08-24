@@ -95,4 +95,11 @@ object Conventions {
    awaitClose { request.remove() }
   }
  }
+
+ fun setDates(convention: Convention) {
+  getInstance()
+   .document(convention.id)
+   .update(Constants.DATE_A, convention.dateA,
+    Constants.DATE_B, convention.dateB)
+ }
 }

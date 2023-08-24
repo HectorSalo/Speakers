@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.skysam.speakers.dataClasses.Convention
 import com.skysam.speakers.databinding.FragmentConventionsBinding
 
-class ConventionsFragment : Fragment() {
+class ConventionsFragment : Fragment(), OnClick {
 
     private var _binding: FragmentConventionsBinding? = null
     private val binding get() = _binding!!
@@ -28,7 +28,7 @@ class ConventionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        conventionsAdapter = ConventionsAdapter()
+        conventionsAdapter = ConventionsAdapter(this)
         binding.rvConventions.apply {
             setHasFixedSize(true)
             adapter = conventionsAdapter
@@ -57,5 +57,19 @@ class ConventionsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun view(convention: Convention) {
+
+    }
+
+    override fun dates(convention: Convention) {
+        viewModel.selectDates(convention)
+        val dialog = SelectDatesDialog()
+        dialog.show(requireActivity().supportFragmentManager, tag)
+    }
+
+    override fun speakers(convention: Convention) {
+
     }
 }

@@ -34,16 +34,10 @@ object Speeches {
 
                     val speeches = mutableListOf<Speech>()
                     for (speech in value!!) {
-                        var speakers = listOf<String>()
-                        if (speech.get(Constants.SPEAKERS) != null) {
-                            @Suppress("UNCHECKED_CAST")
-                            speakers = speech.data.getValue(Constants.SPEAKERS) as List<String>
-                        }
                         val newSpeech = Speech(
                             speech.id,
                             speech.getString(Constants.TITLE)!!,
-                            speech.getString(Constants.ID_CONVENTION)!!,
-                            speakers
+                            speech.getString(Constants.ID_CONVENTION)!!
                         )
                         speeches.add(newSpeech)
                     }

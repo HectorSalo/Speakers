@@ -29,13 +29,6 @@ object Utils {
   return DateFormat.getDateInstance().format(value)
  }
 
- fun convertRangeDateToString(date1: Date, date2: Date): String {
-  val calendar = Calendar.getInstance()
-  calendar.time = date1
-  val day1 = calendar.get(Calendar.DAY_OF_MONTH)
-  return "$day1 - ${convertDateToString(date2)}"
- }
-
  /*fun organizedAlphabeticList(list: MutableList<Booking>): MutableList<Booking> {
   Collections.sort(list, object : Comparator<Booking> {
    var collator = Collator.getInstance()

@@ -10,8 +10,9 @@ data class Speaker(
  val id: String,
  var name: String,
  var congregation: String,
+ var section: String,
+ var lastTime: Date?,
  val speeches: List<String>,
- val listDates: List<Date>,
  var observations: String,
  var isActive: Boolean
 )

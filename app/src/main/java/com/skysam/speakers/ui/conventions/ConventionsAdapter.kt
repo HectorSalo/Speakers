@@ -19,7 +19,8 @@ import com.skysam.speakers.dataClasses.Convention
  * Created by Hector Chirinos on 22/08/2023.
  */
 
-class ConventionsAdapter: RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() {
+class ConventionsAdapter(private val onClick: OnClick):
+    RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() {
     private lateinit var context: Context
     private var conventions = listOf<Convention>()
 
@@ -33,8 +34,8 @@ class ConventionsAdapter: RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() 
     override fun onBindViewHolder(holder: ConventionsAdapter.ViewHolder, position: Int) {
         val item = conventions[position]
         holder.title.text = item.title
-        holder.date.text = if (item.dateA != null && item.dateB != null) context.getString(R.string.text_two_variable,
-            Utils.convertDateToString(item.dateA!!), Utils.convertDateToString(item.dateB!!))
+        holder.date.text = if (item.dateA != null && item.dateB != null)
+            "${Utils.convertDateToString(item.dateA!!)} / ${Utils.convertDateToString(item.dateB!!)}"
         else context.getString(R.string.text_no_dates)
 
         Glide.with(context)
@@ -50,9 +51,9 @@ class ConventionsAdapter: RecyclerView.Adapter<ConventionsAdapter.ViewHolder>() 
 
             popMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.menu_assign_speakers -> {}
-                    R.id.menu_assign_dates -> {}
-                    R.id.menu_view -> {}
+                    R.id.menu_assign_speakers -> onClick.speakers(item)
+                    R.id.menu_assign_dates -> onClick.dates(item)
+                    R.id.menu_view -> onClick.view(item)
                 }
                 false
             }

@@ -35,9 +35,14 @@
     <string name="text_title">Título</string>
     <string name="text_no_dates">Sin fechas definidas</string>
     <string name="text_assign_dates">Asignar/Cambiar fechas</string>
+    <string name="title_dialog_select_dates">Seleccione las fechas</string>
     <!--New Convention-->
     <string name="text_new_convention">Crear Asamblea</string>
 
     <!--Speaker-->
     <string name="text_name">Nombre</string>
+    <string name="text_section_a">Sección A</string>
+    <string name="text_section_b">Sección B</string>
+    <string name="text_congregation">Congregación</string>
+    <string name="text_speaker_not_speech">Congregación</string>
 </resources>

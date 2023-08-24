@@ -7,6 +7,5 @@ package com.skysam.speakers.dataClasses
 data class Speech(
  val id: String,
  var title: String,
- var conventionId: String,
- var listSpeakers: List<String>
+ var conventionId: String
 )

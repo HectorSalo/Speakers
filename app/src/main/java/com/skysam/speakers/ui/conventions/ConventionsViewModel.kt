@@ -9,4 +9,15 @@ import com.skysam.speakers.repositories.Conventions
 
 class ConventionsViewModel : ViewModel() {
     val conventions: LiveData<List<Convention>> = Conventions.getConventions().asLiveData()
+
+    private val _convention = MutableLiveData<Convention>()
+    val convention: LiveData<Convention> get() = _convention
+
+    fun selectDates(convention: Convention) {
+        _convention.value = convention
+    }
+
+    fun setDates(convention: Convention) {
+        Conventions.setDates(convention)
+    }
 }
