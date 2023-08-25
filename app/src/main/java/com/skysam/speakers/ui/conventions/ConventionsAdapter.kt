@@ -14,6 +14,7 @@ import com.google.android.material.card.MaterialCardView
 import com.skysam.speakers.R
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Convention
+import java.util.Date
 
 /**
  * Created by Hector Chirinos on 22/08/2023.
@@ -48,6 +49,11 @@ class ConventionsAdapter(private val onClick: OnClick):
         holder.card.setOnClickListener {
             val popMenu = PopupMenu(context, holder.card)
             popMenu.inflate(R.menu.menu_convention_item)
+
+            if (item.dateB != null && item.dateB!!.before(Date())) {
+                popMenu.menu.getItem(1).isVisible = false
+                popMenu.menu.getItem(2).isVisible = false
+            }
 
             popMenu.setOnMenuItemClickListener {
                 when (it.itemId) {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_view"
+        android:title="@string/text_view_details" />
+
+    <item
+        android:id="@+id/menu_assign_speeches"
+        android:title="@string/text_assign_speech" />
+
+    <item
+        android:id="@+id/menu_update"
+        android:title="@string/text_update" />
+
+    <item
+        android:id="@+id/menu_enable"
+        android:title="@string/text_desable" />
+
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/text_delete" />
+
+</menu>

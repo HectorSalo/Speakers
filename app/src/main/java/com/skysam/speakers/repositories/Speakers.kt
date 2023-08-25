@@ -48,17 +48,28 @@ object Speakers {
                             speaker.id,
                             speaker.getString(Constants.NAME)!!,
                             speaker.getString(Constants.CONGREGATION)!!,
-                            speaker.getString(Constants.SECTION)!!,
-                            null,
+                            speaker.getBoolean(Constants.IS_SECTION_A)!!,
                             speeches,
                             speaker.getString(Constants.OBSERVATIONS)!!,
                             speaker.getBoolean(Constants.IS_ACTIVE)!!
                         )
                         speakers.add(newSpeaker)
                     }
-                    trySend(speakers)
+                    trySend(Utils.organizedAlphabeticList(speakers))
                 }
             awaitClose { request.remove() }
         }
+    }
+
+    fun saveSpeaker(speaker: Speaker) {
+        val data = hashMapOf(
+            Constants.NAME to speaker.name,
+            Constants.CONGREGATION to speaker.congregation,
+            Constants.IS_SECTION_A to speaker.isSectionA,
+            Constants.OBSERVATIONS to speaker.observations,
+            Constants.IS_ACTIVE to true
+        )
+        getInstance()
+            .add(data)
     }
 }

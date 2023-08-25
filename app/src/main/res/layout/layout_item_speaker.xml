@@ -35,15 +35,14 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_speeches"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/text_date"
+            android:text="@string/text_speeches_assign"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_congregation"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_congregation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,6 +11,7 @@ import com.skysam.speakers.dataClasses.Convention
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import java.util.Date
 
 /**
  * Created by Hector Chirinos on 22/08/2023.

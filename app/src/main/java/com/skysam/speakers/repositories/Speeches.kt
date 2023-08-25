@@ -46,4 +46,29 @@ object Speeches {
             awaitClose { request.remove() }
         }
     }
+
+    fun getSpeechesByConvention(id: String): Flow<List<Speech>> {
+        return callbackFlow {
+            val request = getInstance()
+                .whereEqualTo(Constants.ID_CONVENTION, id)
+                .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
+                    if (error != null) {
+                        Log.w(ContentValues.TAG, "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+
+                    val speeches = mutableListOf<Speech>()
+                    for (speech in value!!) {
+                        val newSpeech = Speech(
+                            speech.id,
+                            speech.getString(Constants.TITLE)!!,
+                            speech.getString(Constants.ID_CONVENTION)!!
+                        )
+                        speeches.add(newSpeech)
+                    }
+                    trySend(speeches)
+                }
+            awaitClose { request.remove() }
+        }
+    }
 }

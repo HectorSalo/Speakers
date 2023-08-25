@@ -22,9 +22,7 @@ object Constants {
 
  const val ID_CONVENTION = "idConvention"
 
- const val SECTION = "section"
- const val SECTION_B = "sectionB"
- const val SECTION_A = "sectionA"
+ const val IS_SECTION_A = "isSectionA"
  const val OBSERVATIONS = "observations"
  const val CONGREGATION = "congregation"
  const val IS_ACTIVE = "isActive"

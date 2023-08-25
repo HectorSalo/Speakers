@@ -1,23 +1,23 @@
 package com.skysam.speakers.ui.speakers
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.skysam.speakers.dataClasses.Convention
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.databinding.FragmentSpeakersBinding
+import com.skysam.speakers.ui.assign.AssignActivity
 
-class SpeakersFragment : Fragment() {
+class SpeakersFragment : Fragment(), OnClick {
 
     private var _binding: FragmentSpeakersBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SpeakersViewModel by activityViewModels()
     private lateinit var speakersAdapter: SpeakersAdapter
     private var speakers = listOf<Speaker>()
-    private var conventions = listOf<Convention>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,24 +30,24 @@ class SpeakersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        speakersAdapter = SpeakersAdapter()
+        speakersAdapter = SpeakersAdapter(this)
         binding.rvSpeakers.apply {
             setHasFixedSize(true)
             adapter = speakersAdapter
+        }
+
+        binding.fab.setOnClickListener {
+            val newSpeakerDialog = NewSpeakerDialog()
+            newSpeakerDialog.show(requireActivity().supportFragmentManager, tag)
         }
 
         subscribeObservers()
     }
 
     private fun subscribeObservers() {
-        viewModel.conventions.observe(viewLifecycleOwner) {
-            if (_binding != null) {
-                conventions = it
-            }
-        }
         viewModel.speakers.observe(viewLifecycleOwner) {
             if (_binding != null) {
-                if (speakers.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     speakers = it
                     binding.rvSpeakers.visibility = View.VISIBLE
                     binding.tvListEmpty.visibility = View.GONE
@@ -64,5 +64,25 @@ class SpeakersFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun view(speaker: Speaker) {
+        TODO("Not yet implemented")
+    }
+
+    override fun assign(speaker: Speaker) {
+       startActivity(Intent(requireContext(), AssignActivity::class.java))
+    }
+
+    override fun update(speaker: Speaker) {
+        TODO("Not yet implemented")
+    }
+
+    override fun enable(speaker: Speaker) {
+        TODO("Not yet implemented")
+    }
+
+    override fun delete(speaker: Speaker) {
+        TODO("Not yet implemented")
     }
 }

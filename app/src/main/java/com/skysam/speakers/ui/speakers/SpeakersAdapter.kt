@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.skysam.speakers.R
-import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Speaker
 
 /**
  * Created by Hector Chirinos on 23/08/2023.
  */
 
-class SpeakersAdapter: RecyclerView.Adapter<SpeakersAdapter.ViewHolder>() {
+class SpeakersAdapter(private val onClick: OnClick): RecyclerView.Adapter<SpeakersAdapter.ViewHolder>() {
  private lateinit var context: Context
  private var speakers = listOf<Speaker>()
 
@@ -31,23 +31,29 @@ class SpeakersAdapter: RecyclerView.Adapter<SpeakersAdapter.ViewHolder>() {
   val item = speakers[position]
   holder.name.text = item.name
   holder.congregation.text = item.congregation
-  holder.date.text = if (item.lastTime != null) Utils.convertDateToString(item.lastTime!!)
-  else context.getString(R.string.text_speaker_not_speech)
+  holder.speeches.text = if (item.speeches.isNotEmpty())
+   context.getString(R.string.text_speeches_assign, item.speeches.size.toString())
+  else context.getString(R.string.text_not_speeches_assing)
 
-  /*holder.card.setOnClickListener {
+  holder.card.setOnClickListener {
    val popMenu = PopupMenu(context, holder.card)
-   popMenu.inflate(R.menu.menu_convention_item)
+   popMenu.inflate(R.menu.menu_speaker_item)
+
+   popMenu.menu.getItem(3).title = if (item.isActive) context.getString(R.string.text_desable)
+   else context.getString(R.string.text_enable)
 
    popMenu.setOnMenuItemClickListener {
     when (it.itemId) {
-     R.id.menu_assign_speakers -> onClick.speakers(item)
-     R.id.menu_assign_dates -> onClick.dates(item)
      R.id.menu_view -> onClick.view(item)
+     R.id.menu_assign_speeches -> onClick.assign(item)
+     R.id.menu_update -> onClick.update(item)
+     R.id.menu_enable -> onClick.enable(item)
+     R.id.menu_delete -> onClick.delete(item)
     }
     false
    }
    popMenu.show()
-  }*/
+  }
  }
 
  override fun getItemCount(): Int = speakers.size
@@ -55,7 +61,7 @@ class SpeakersAdapter: RecyclerView.Adapter<SpeakersAdapter.ViewHolder>() {
  inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val name: TextView = view.findViewById(R.id.tv_name)
   val congregation: TextView = view.findViewById(R.id.tv_congregation)
-  val date: TextView = view.findViewById(R.id.tv_date)
+  val speeches: TextView = view.findViewById(R.id.tv_speeches)
   val card: MaterialCardView = view.findViewById(R.id.card)
  }
 
