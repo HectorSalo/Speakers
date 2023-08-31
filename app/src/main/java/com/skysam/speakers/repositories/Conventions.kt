@@ -97,6 +97,42 @@ object Conventions {
   }
  }
 
+ fun getCurrentConventionsAvalible(): Flow<List<Convention>> {
+  return callbackFlow {
+   val request = getInstance()
+    .whereEqualTo(Constants.CURRENT, true)
+    .whereGreaterThan(Constants.DATE_A, Date())
+    .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
+     if (error != null) {
+      Log.w(ContentValues.TAG, "Listen failed.", error)
+      return@addSnapshotListener
+     }
+
+     val conventions = mutableListOf<Convention>()
+     for (convention in value!!) {
+      val dateA = if (convention.getDate(Constants.DATE_A) != null) convention.getDate(Constants.DATE_A) else null
+      val dateB = if (convention.getDate(Constants.DATE_B) != null) convention.getDate(Constants.DATE_B) else null
+      var speeches = listOf<String>()
+      if (convention.get(Constants.SPEECHES) != null) {
+       @Suppress("UNCHECKED_CAST")
+       speeches = convention.data.getValue(Constants.SPEECHES) as List<String>
+      }
+      val newConvention = Convention(
+       convention.id,
+       convention.getString(Constants.TITLE)!!,
+       convention.getString(Constants.IMAGE)!!,
+       dateA,
+       dateB,
+       speeches
+      )
+      conventions.add(newConvention)
+     }
+     trySend(conventions)
+    }
+   awaitClose { request.remove() }
+  }
+ }
+
  fun setDates(convention: Convention) {
   getInstance()
    .document(convention.id)

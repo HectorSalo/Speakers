@@ -50,4 +50,8 @@
     <string name="text_view_details">Ver detalles</string>
     <string name="text_desable">Deshabilitar</string>
     <string name="text_enable">Habilitar</string>
+
+    <!--Assign-->
+    <string name="title_select_convention">Seleccione la Asamblea</string>
+    <string name="text_no_convention_to_assign">Asambleas concluidas. No hay disponibles para asignar</string>
 </resources>
