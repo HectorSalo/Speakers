@@ -16,7 +16,37 @@ class SpeakersViewModel : ViewModel() {
     val speakers: LiveData<List<Speaker>> = Speakers.getSpeakers().asLiveData()
     val speeches: LiveData<List<Speech>> = Speeches.getSpeeches().asLiveData()
 
+    private val _speakerToUpdate = MutableLiveData<Speaker>()
+    val speakerToUpdate: LiveData<Speaker> get() = _speakerToUpdate
+
+    private val _speakerToView = MutableLiveData<Speaker>()
+    val speakerToView: LiveData<Speaker> get() = _speakerToView
+
     fun saveSpeaker(speaker: Speaker) {
         Speakers.saveSpeaker(speaker)
+    }
+
+    fun speakerToUpdate(speaker: Speaker) {
+        _speakerToUpdate.value = speaker
+    }
+
+    fun speakerToView(speaker: Speaker) {
+        _speakerToView.value = speaker
+    }
+
+    fun updateSpeaker(speaker: Speaker) {
+        Speakers.updateSpeaker(speaker)
+    }
+
+    fun enableSpeaker(speaker: Speaker) {
+        Speakers.enableSpeaker(speaker)
+    }
+
+    fun deleteSpeaker(speaker: Speaker) {
+        Speakers.deleteSpeaker(speaker)
+    }
+
+    fun getSpeechesBySpeaker(speaker: Speaker): LiveData<List<Speech>> {
+        return Speeches.getSpeechesBySpeaker(speaker.speeches).asLiveData()
     }
 }

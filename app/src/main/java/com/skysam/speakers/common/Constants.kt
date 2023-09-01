@@ -21,11 +21,16 @@ object Constants {
  const val CURRENT = "current"
 
  const val ID_CONVENTION = "idConvention"
+ const val POSITION = "position"
+ const val IS_VIAJANTE = "isViajante"
+ const val IS_REPRESENTANTE = "isRepresentante"
 
  const val IS_SECTION_A = "isSectionA"
  const val OBSERVATIONS = "observations"
  const val CONGREGATION = "congregation"
  const val IS_ACTIVE = "isActive"
+ const val SPEAKER = "speaker"
+ const val CONVENTION = "convention"
 
  const val PREFERENCES = "preferences"
 

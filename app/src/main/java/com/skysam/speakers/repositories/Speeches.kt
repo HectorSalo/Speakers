@@ -1,10 +1,12 @@
 package com.skysam.speakers.repositories
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
+import com.google.firebase.firestore.Query
 import com.skysam.speakers.common.Constants
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Speech
@@ -28,7 +30,7 @@ object Speeches {
             val request = getInstance()
                 .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
                     if (error != null) {
-                        Log.w(ContentValues.TAG, "Listen failed.", error)
+                        Log.w(TAG, "Listen failed.", error)
                         return@addSnapshotListener
                     }
 
@@ -37,7 +39,10 @@ object Speeches {
                         val newSpeech = Speech(
                             speech.id,
                             speech.getString(Constants.TITLE)!!,
-                            speech.getString(Constants.ID_CONVENTION)!!
+                            speech.getString(Constants.ID_CONVENTION)!!,
+                            speech.getDouble(Constants.POSITION)!!.toInt(),
+                            speech.getBoolean(Constants.IS_VIAJANTE)!!,
+                            speech.getBoolean(Constants.IS_REPRESENTANTE)!!
                         )
                         speeches.add(newSpeech)
                     }
@@ -51,9 +56,10 @@ object Speeches {
         return callbackFlow {
             val request = getInstance()
                 .whereEqualTo(Constants.ID_CONVENTION, id)
+                .orderBy(Constants.POSITION, Query.Direction.ASCENDING)
                 .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
                     if (error != null) {
-                        Log.w(ContentValues.TAG, "Listen failed.", error)
+                        Log.w(TAG, "Listen failed.", error)
                         return@addSnapshotListener
                     }
 
@@ -62,7 +68,10 @@ object Speeches {
                         val newSpeech = Speech(
                             speech.id,
                             speech.getString(Constants.TITLE)!!,
-                            speech.getString(Constants.ID_CONVENTION)!!
+                            speech.getString(Constants.ID_CONVENTION)!!,
+                            speech.getDouble(Constants.POSITION)!!.toInt(),
+                            speech.getBoolean(Constants.IS_VIAJANTE)!!,
+                            speech.getBoolean(Constants.IS_REPRESENTANTE)!!
                         )
                         speeches.add(newSpeech)
                     }
@@ -70,5 +79,49 @@ object Speeches {
                 }
             awaitClose { request.remove() }
         }
+    }
+
+    fun getSpeechesBySpeaker(speechesFrom: List<String>): Flow<List<Speech>> {
+        return callbackFlow {
+            val speeches = mutableListOf<Speech>()
+            for (speech in speechesFrom) {
+                getInstance()
+                    .document(speech)
+                    .get()
+                    .addOnSuccessListener {value ->
+                        if (value != null && value.exists()) {
+                        val newSpeech = Speech(
+                            value.id,
+                            value.getString(Constants.TITLE)!!,
+                            value.getString(Constants.ID_CONVENTION)!!,
+                            value.getDouble(Constants.POSITION)!!.toInt(),
+                            value.getBoolean(Constants.IS_VIAJANTE)!!,
+                            value.getBoolean(Constants.IS_REPRESENTANTE)!!
+                        )
+                        speeches.add(newSpeech)
+                            if (speech == speechesFrom.last()) {
+                                trySend(speeches)
+                            }
+                    } else {
+                        Log.d(TAG, "Current data: null")
+                    } }
+                    .addOnFailureListener {
+                        Log.w(TAG, "Listen failed.")
+                    }
+            }
+            awaitClose {  }
+        }
+    }
+
+    fun assignToViajante(speech: Speech) {
+        getInstance()
+            .document(speech.id)
+            .update(Constants.IS_VIAJANTE, true)
+    }
+
+    fun assignToRepresentante(speech: Speech) {
+        getInstance()
+            .document(speech.id)
+            .update(Constants.IS_REPRESENTANTE, true)
     }
 }

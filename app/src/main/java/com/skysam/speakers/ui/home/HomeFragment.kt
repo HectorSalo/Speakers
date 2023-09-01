@@ -1,5 +1,6 @@
 package com.skysam.speakers.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.skysam.speakers.R
+import com.skysam.speakers.common.Constants
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Convention
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.dataClasses.Speech
 import com.skysam.speakers.databinding.FragmentHomeBinding
+import com.skysam.speakers.ui.assign.AssignActivity
+import com.skysam.speakers.ui.speeches.SpeechViewModel
+import com.skysam.speakers.ui.speeches.ViewSpeechesDialog
 import java.util.Date
 
 class HomeFragment : Fragment() {
@@ -20,6 +25,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by activityViewModels()
+    private val viewModelSpeech: SpeechViewModel by activityViewModels()
     private var speeches = listOf<Speech>()
     private val speakers = listOf<Speaker>()
 
@@ -73,7 +79,7 @@ class HomeFragment : Fragment() {
                 speechesFromConvention.add(speech)
             }
         }
-        var totalSpeakers = speakers.size
+        val totalSpeakers = speakers.size
 
         val totalSpeeches = speechesFromConvention.size * 2
 
@@ -89,6 +95,18 @@ class HomeFragment : Fragment() {
             binding.btnAssign1.text = getString(R.string.text_assign_speakers)
             if (totalSpeakers == 0) binding.btnView1.visibility = View.GONE
             else binding.btnView1.visibility = View.VISIBLE
+        }
+
+        binding.btnAssign1.setOnClickListener {
+            val intent = Intent(requireContext(), AssignActivity::class.java)
+            intent.putExtra(Constants.CONVENTION, convention)
+            startActivity(intent)
+        }
+
+        binding.btnView1.setOnClickListener {
+            viewModelSpeech.viewConvention(convention)
+            val viewSpeechesDialog = ViewSpeechesDialog()
+            viewSpeechesDialog.show(requireActivity().supportFragmentManager, tag)
         }
     }
 
@@ -108,7 +126,7 @@ class HomeFragment : Fragment() {
                 speechesFromConvention.add(speech)
             }
         }
-        var totalSpeakers = speakers.size
+        val totalSpeakers = speakers.size
         val totalSpeeches = speechesFromConvention.size * 2
 
         if (totalSpeeches == totalSpeakers) {
@@ -123,6 +141,18 @@ class HomeFragment : Fragment() {
             binding.btnAssign2.text = getString(R.string.text_assign_speakers)
             if (totalSpeakers == 0) binding.btnView2.visibility = View.GONE
             else binding.btnView2.visibility = View.VISIBLE
+        }
+
+        binding.btnAssign2.setOnClickListener {
+            val intent = Intent(requireContext(), AssignActivity::class.java)
+            intent.putExtra(Constants.CONVENTION, convention)
+            startActivity(intent)
+        }
+
+        binding.btnView2.setOnClickListener {
+            viewModelSpeech.viewConvention(convention)
+            val viewSpeechesDialog = ViewSpeechesDialog()
+            viewSpeechesDialog.show(requireActivity().supportFragmentManager, tag)
         }
     }
 }

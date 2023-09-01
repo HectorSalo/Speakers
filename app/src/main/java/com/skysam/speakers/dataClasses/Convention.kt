@@ -1,5 +1,6 @@
 package com.skysam.speakers.dataClasses
 
+import java.io.Serializable
 import java.util.Date
 
 /**
@@ -13,4 +14,4 @@ data class Convention(
  var dateA: Date?,
  var dateB: Date?,
  var speeches: List<String>
-)
+): Serializable

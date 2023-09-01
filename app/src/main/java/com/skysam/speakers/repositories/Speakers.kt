@@ -61,6 +61,41 @@ object Speakers {
         }
     }
 
+    fun getSpeakersBySpeech(id: String): Flow<List<Speaker>> {
+        return callbackFlow {
+            val request = getInstance()
+                .whereArrayContains(Constants.SPEECHES, id)
+                .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
+                    if (error != null) {
+                        Log.w(ContentValues.TAG, "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+
+                    val speakers = mutableListOf<Speaker>()
+                    for (speaker in value!!) {
+                        var speeches = listOf<String>()
+                        if (speaker.get(Constants.SPEECHES) != null) {
+                            @Suppress("UNCHECKED_CAST")
+                            speeches = speaker.data.getValue(Constants.SPEECHES) as List<String>
+                        }
+
+                        val newSpeaker = Speaker(
+                            speaker.id,
+                            speaker.getString(Constants.NAME)!!,
+                            speaker.getString(Constants.CONGREGATION)!!,
+                            speaker.getBoolean(Constants.IS_SECTION_A)!!,
+                            speeches,
+                            speaker.getString(Constants.OBSERVATIONS)!!,
+                            speaker.getBoolean(Constants.IS_ACTIVE)!!
+                        )
+                        speakers.add(newSpeaker)
+                    }
+                    trySend(Utils.organizedAlphabeticList(speakers))
+                }
+            awaitClose { request.remove() }
+        }
+    }
+
     fun saveSpeaker(speaker: Speaker) {
         val data = hashMapOf(
             Constants.NAME to speaker.name,
@@ -71,5 +106,30 @@ object Speakers {
         )
         getInstance()
             .add(data)
+    }
+
+    fun updateSpeaker (speaker: Speaker) {
+        val data: Map<String, Any> = hashMapOf(
+            Constants.NAME to speaker.name,
+            Constants.CONGREGATION to speaker.congregation,
+            Constants.IS_SECTION_A to speaker.isSectionA,
+            Constants.OBSERVATIONS to speaker.observations,
+            Constants.IS_ACTIVE to speaker.isActive
+        )
+        getInstance()
+            .document(speaker.id)
+            .update(data)
+    }
+
+    fun enableSpeaker(speaker: Speaker) {
+        getInstance()
+            .document(speaker.id)
+            .update(Constants.IS_ACTIVE, !speaker.isActive)
+    }
+
+    fun deleteSpeaker(speaker: Speaker) {
+        getInstance()
+            .document(speaker.id)
+            .delete()
     }
 }

@@ -21,6 +21,7 @@
     <string name="text_inactive">No disponible</string>
     <string name="msg_exit_dialog">Se perderá toda la información.\n¿Desea salir?</string>
     <string name="msg_delete_dialog">¿Desea eliminar esta información?</string>
+    <string name="text_details">Detalles</string>
 
     <!--Errors-->
     <string name="error_field_empty">Campo obligatorio</string>
@@ -54,4 +55,9 @@
     <!--Assign-->
     <string name="title_select_convention">Seleccione la Asamblea</string>
     <string name="text_no_convention_to_assign">Asambleas concluidas. No hay disponibles para asignar</string>
+
+    <!--View Speeches-->
+    <string name="text_not_speech_assing">No asignado</string>
+    <string name="text_viajante">Superintendente de Circuito</string>
+    <string name="text_representante">Representante de la Sucursal</string>
 </resources>

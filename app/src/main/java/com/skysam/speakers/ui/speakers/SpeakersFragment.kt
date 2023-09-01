@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.skysam.speakers.common.Constants
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.databinding.FragmentSpeakersBinding
 import com.skysam.speakers.ui.assign.AssignActivity
@@ -67,22 +68,28 @@ class SpeakersFragment : Fragment(), OnClick {
     }
 
     override fun view(speaker: Speaker) {
-        TODO("Not yet implemented")
+        viewModel.speakerToView(speaker)
+        val viewDetailsDialog = ViewDetailsDialog()
+        viewDetailsDialog.show(requireActivity().supportFragmentManager, tag)
     }
 
     override fun assign(speaker: Speaker) {
-       startActivity(Intent(requireContext(), AssignActivity::class.java))
+        val intent = Intent(requireContext(), AssignActivity::class.java)
+        intent.putExtra(Constants.SPEAKER, speaker)
+        startActivity(intent)
     }
 
     override fun update(speaker: Speaker) {
-        TODO("Not yet implemented")
+        viewModel.speakerToUpdate(speaker)
+        val updateSpeakerDialog = UpdateSpeakerDialog()
+        updateSpeakerDialog.show(requireActivity().supportFragmentManager, tag)
     }
 
     override fun enable(speaker: Speaker) {
-        TODO("Not yet implemented")
+        viewModel.enableSpeaker(speaker)
     }
 
     override fun delete(speaker: Speaker) {
-        TODO("Not yet implemented")
+        viewModel.deleteSpeaker(speaker)
     }
 }

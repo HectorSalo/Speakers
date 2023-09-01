@@ -1,5 +1,6 @@
 package com.skysam.speakers.ui.assign
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.skysam.speakers.R
+import com.skysam.speakers.common.Constants
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Convention
+import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.databinding.FragmentFirstBinding
 
 
@@ -25,6 +28,31 @@ class FirstFragment : Fragment() {
     ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (activity?.intent!!.hasExtra(Constants.SPEAKER)) {
+            val speaker = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                activity?.intent?.getSerializableExtra(Constants.SPEAKER, Speaker::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                activity?.intent?.getSerializableExtra(Constants.SPEAKER) as Speaker
+            }
+            viewModel.selectSpeaker(speaker!!)
+        }
+
+        if (activity?.intent!!.hasExtra(Constants.CONVENTION)) {
+            val convention = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                activity?.intent?.getSerializableExtra(Constants.CONVENTION, Convention::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                activity?.intent?.getSerializableExtra(Constants.CONVENTION) as Convention
+            }
+            viewModel.selectConvention(convention!!)
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,7 +98,7 @@ class FirstFragment : Fragment() {
         else "${Utils.convertDateToString(convention.dateA!!)} / ${Utils.convertDateToString(convention.dateB!!)}"
 
         binding.card1.setOnClickListener {
-            viewModel.view(convention)
+            viewModel.selectConvention(convention)
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
     }
@@ -87,7 +115,7 @@ class FirstFragment : Fragment() {
         else "${Utils.convertDateToString(convention.dateA!!)} / ${Utils.convertDateToString(convention.dateB!!)}"
 
         binding.card2.setOnClickListener {
-            viewModel.view(convention)
+            viewModel.selectConvention(convention)
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
     }

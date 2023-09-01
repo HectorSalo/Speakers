@@ -1,5 +1,6 @@
 package com.skysam.speakers.dataClasses
 
+import java.io.Serializable
 import java.util.Date
 
 /**
@@ -14,4 +15,4 @@ data class Speaker(
  val speeches: List<String>,
  var observations: String,
  var isActive: Boolean
-)
+): Serializable
