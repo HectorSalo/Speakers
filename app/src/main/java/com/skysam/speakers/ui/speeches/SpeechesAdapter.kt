@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skysam.speakers.R
 import com.skysam.speakers.dataClasses.SpeechToView
 
-class SpeechesAdapter: RecyclerView.Adapter<SpeechesAdapter.ViewHolder>() {
+class SpeechesAdapter(private val viewSection: Boolean): RecyclerView.Adapter<SpeechesAdapter.ViewHolder>() {
     private lateinit var context: Context
     private var speeches = listOf<SpeechToView>()
 
@@ -24,12 +24,17 @@ class SpeechesAdapter: RecyclerView.Adapter<SpeechesAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: SpeechesAdapter.ViewHolder, position: Int) {
         val item = speeches[position]
         holder.title.text = item.title
-        holder.sectionA.text = if (item.sectionA.isNotEmpty())
-            "${context.getString(R.string.text_section_b)}: ${item.sectionA}"
-        else context.getString(R.string.text_not_speech_assing)
-        holder.sectionB.text = if (item.sectionB.isNotEmpty())
-            "${context.getString(R.string.text_section_b)}: ${item.sectionB}"
-        else context.getString(R.string.text_not_speech_assing)
+        if (viewSection) {
+            holder.sectionA.text = if (item.sectionA.isNotEmpty())
+                "${context.getString(R.string.text_section_b)}: ${item.sectionA}"
+            else context.getString(R.string.text_not_speech_assing)
+            holder.sectionB.text = if (item.sectionB.isNotEmpty())
+                "${context.getString(R.string.text_section_b)}: ${item.sectionB}"
+            else context.getString(R.string.text_not_speech_assing)
+        } else {
+            holder.sectionA.visibility = View.GONE
+            holder.sectionB.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int = speeches.size

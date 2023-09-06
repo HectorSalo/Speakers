@@ -51,6 +51,7 @@
     <string name="text_view_details">Ver detalles</string>
     <string name="text_desable">Deshabilitar</string>
     <string name="text_enable">Habilitar</string>
+    <string name="text_last_speech">Último discurso</string>
 
     <!--Assign-->
     <string name="title_select_convention">Seleccione la Asamblea</string>

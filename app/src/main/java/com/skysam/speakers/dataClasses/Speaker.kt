@@ -1,7 +1,6 @@
 package com.skysam.speakers.dataClasses
 
 import java.io.Serializable
-import java.util.Date
 
 /**
  * Created by Hector Chirinos on 22/08/2023.

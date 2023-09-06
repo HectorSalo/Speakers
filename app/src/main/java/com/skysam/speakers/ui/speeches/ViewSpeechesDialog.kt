@@ -19,12 +19,6 @@ class ViewSpeechesDialog: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogViewSpeechesBinding.inflate(layoutInflater)
 
-        speechesAdapter = SpeechesAdapter()
-        binding.rvSpeeches.apply {
-            setHasFixedSize(true)
-            adapter = speechesAdapter
-        }
-
         subscribeViewModel()
 
         val builder = AlertDialog.Builder(requireActivity())
@@ -43,22 +37,33 @@ class ViewSpeechesDialog: DialogFragment() {
             if (_binding != null) {
                 viewModel.getSpeeches(it).observe(this.requireActivity()) {speeches ->
                     val speechesToView = mutableListOf<SpeechToView>()
-                    speeches.forEach {speech ->
-                        val sectionA = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
-                        else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_viajante) else ""
-                        val sectionB = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
-                        else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_viajante) else ""
-                        val newSpeech = SpeechToView(
-                            speech.title,
-                            sectionA,
-                            sectionB
-                        )
-                        speechesToView.add(newSpeech)
-                        /*viewModel.getSpeakers(speech).observe(this.requireActivity()) {speakers ->
-
-                        }*/
+                    for (speech in speeches) {
+                        viewModel.getSpeakers(speech).observe(this.requireActivity()) {speakers ->
+                            var nameA = ""
+                            var nameB = ""
+                            speakers.forEach {speak ->
+                                if (speak.isSectionA) nameA = speak.name else nameB = speak.name
+                            }
+                            val sectionA = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
+                            else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameA
+                            val sectionB = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
+                            else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameB
+                            val newSpeech = SpeechToView(
+                                speech.title,
+                                sectionA,
+                                sectionB
+                            )
+                            speechesToView.add(newSpeech)
+                            if (speeches.last() == speech) {
+                                val speechesAdapter = SpeechesAdapter(true)
+                                binding.rvSpeeches.apply {
+                                    setHasFixedSize(true)
+                                    adapter = speechesAdapter
+                                }
+                                speechesAdapter.updateList(speechesToView)
+                            }
+                        }
                     }
-                    speechesAdapter.updateList(speechesToView)
                 }
             }
         }

@@ -49,4 +49,8 @@ class SpeakersViewModel : ViewModel() {
     fun getSpeechesBySpeaker(speaker: Speaker): LiveData<List<Speech>> {
         return Speeches.getSpeechesBySpeaker(speaker.speeches).asLiveData()
     }
+
+    fun getLastConventionFromSpeaker(speaker: Speaker): LiveData<Convention> {
+        return Conventions.getLastConventionFromSpeaker(speaker.speeches).asLiveData()
+    }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.skysam.speakers.R
 import com.skysam.speakers.common.Speakers
+import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.SpeechToView
 import com.skysam.speakers.databinding.DialogViewDetailsSpeakerBinding
 import com.skysam.speakers.ui.speeches.SpeechesAdapter
@@ -21,7 +22,7 @@ class ViewDetailsDialog: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogViewDetailsSpeakerBinding.inflate(layoutInflater)
 
-        speechesAdapter = SpeechesAdapter()
+        speechesAdapter = SpeechesAdapter(false)
         binding.rvSpeeches.apply {
             setHasFixedSize(true)
             adapter = speechesAdapter
@@ -46,6 +47,7 @@ class ViewDetailsDialog: DialogFragment() {
                 if (it.speeches.isEmpty()) {
                     binding.rvSpeeches.visibility = View.GONE
                     binding.tvListEmpty.visibility = View.VISIBLE
+                    binding.etLast.visibility = View.GONE
                 } else {
                     viewModel.getSpeechesBySpeaker(it).observe(this.requireActivity()) {speeches ->
                         val speechesToView = mutableListOf<SpeechToView>()
@@ -57,9 +59,14 @@ class ViewDetailsDialog: DialogFragment() {
                             )
                             speechesToView.add(speechToView)
                         }
-                        speechesAdapter.updateList(speechesToView)
-                        binding.rvSpeeches.visibility = View.VISIBLE
-                        binding.tvListEmpty.visibility = View.GONE
+                        viewModel.getLastConventionFromSpeaker(it).observe(this.requireActivity()) {last ->
+                            binding.etLast.setText(if (it.isSectionA) Utils.convertDateToString(last.dateA!!)
+                            else Utils.convertDateToString(last.dateB!!))
+                            speechesAdapter.updateList(speechesToView)
+                            binding.rvSpeeches.visibility = View.VISIBLE
+                            binding.tvListEmpty.visibility = View.GONE
+                            binding.etLast.visibility = View.VISIBLE
+                        }
                     }
                 }
 

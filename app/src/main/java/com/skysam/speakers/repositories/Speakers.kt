@@ -63,14 +63,10 @@ object Speakers {
 
     fun getSpeakersBySpeech(id: String): Flow<List<Speaker>> {
         return callbackFlow {
-            val request = getInstance()
+            getInstance()
                 .whereArrayContains(Constants.SPEECHES, id)
-                .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
-                    if (error != null) {
-                        Log.w(ContentValues.TAG, "Listen failed.", error)
-                        return@addSnapshotListener
-                    }
-
+                .get()
+                .addOnSuccessListener {value ->
                     val speakers = mutableListOf<Speaker>()
                     for (speaker in value!!) {
                         var speeches = listOf<String>()
@@ -92,7 +88,10 @@ object Speakers {
                     }
                     trySend(Utils.organizedAlphabeticList(speakers))
                 }
-            awaitClose { request.remove() }
+                .addOnFailureListener {
+                    Log.w(ContentValues.TAG, "Error getting documents: ", it)
+                }
+            awaitClose {  }
         }
     }
 
