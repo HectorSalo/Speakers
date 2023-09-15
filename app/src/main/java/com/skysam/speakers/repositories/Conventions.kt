@@ -10,7 +10,6 @@ import com.google.firebase.firestore.Query
 import com.skysam.speakers.common.Constants
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Convention
-import com.skysam.speakers.dataClasses.Speech
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -140,7 +139,7 @@ object Conventions {
   return callbackFlow {
    getInstance()
     .whereArrayContainsAny(Constants.SPEECHES, speechesFrom)
-    .orderBy(Constants.DATE_B, Query.Direction.ASCENDING)
+    .orderBy(Constants.DATE_B, Query.Direction.DESCENDING)
     .limit(1)
     .get()
     .addOnSuccessListener {value ->

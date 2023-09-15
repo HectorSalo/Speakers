@@ -8,6 +8,7 @@ import com.skysam.speakers.dataClasses.Convention
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.dataClasses.Speech
 import com.skysam.speakers.repositories.Conventions
+import com.skysam.speakers.repositories.Speakers
 import com.skysam.speakers.repositories.Speeches
 
 /**
@@ -23,6 +24,9 @@ class AssignViewModel: ViewModel() {
     private val _speaker = MutableLiveData<Speaker>()
     val speaker: LiveData<Speaker> get() = _speaker
 
+    private val _isSectionA = MutableLiveData<Boolean>()
+    val isSectionA: LiveData<Boolean> get() = _isSectionA
+
     fun selectConvention(convention: Convention) {
         _convention.value = convention
     }
@@ -33,5 +37,17 @@ class AssignViewModel: ViewModel() {
 
     fun getSpeeches(convention: Convention): LiveData<List<Speech>> {
         return Speeches.getSpeechesByConvention(convention.id).asLiveData()
+    }
+
+    fun setSection(isSectionA: Boolean) {
+        _isSectionA.value = isSectionA
+    }
+
+    fun getSpeakersBySection(isSectionA: Boolean): LiveData<List<Speaker>> {
+        return Speakers.getSpeakersBySection(isSectionA).asLiveData()
+    }
+
+    fun getLastConventionFromSpeaker(speaker: Speaker): LiveData<Convention> {
+        return Conventions.getLastConventionFromSpeaker(speaker.speeches).asLiveData()
     }
 }
