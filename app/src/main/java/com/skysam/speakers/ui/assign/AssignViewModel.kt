@@ -24,6 +24,9 @@ class AssignViewModel: ViewModel() {
     private val _speaker = MutableLiveData<Speaker>()
     val speaker: LiveData<Speaker> get() = _speaker
 
+    private val _isSectionA = MutableLiveData<Boolean>()
+    val isSectionA: LiveData<Boolean> get() = _isSectionA
+
     fun selectConvention(convention: Convention) {
         _convention.value = convention
     }
@@ -38,5 +41,17 @@ class AssignViewModel: ViewModel() {
 
     fun getSpeakers(speech: Speech): LiveData<List<Speaker>> {
         return Speakers.getSpeakersBySpeech(speech.id).asLiveData()
+    }
+
+    fun setSection(isSectionA: Boolean) {
+        _isSectionA.value = isSectionA
+    }
+
+    fun getSpeakersBySection(isSectionA: Boolean): LiveData<List<Speaker>> {
+        return Speakers.getSpeakersBySection(isSectionA).asLiveData()
+    }
+
+    fun getLastConventionFromSpeaker(speaker: Speaker): LiveData<Convention> {
+        return Conventions.getLastConventionFromSpeaker(speaker.speeches).asLiveData()
     }
 }

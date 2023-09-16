@@ -95,6 +95,42 @@ object Speakers {
         }
     }
 
+    fun getSpeakersBySection(isSectionA: Boolean): Flow<List<Speaker>> {
+        return callbackFlow {
+            val request = getInstance()
+                .whereEqualTo(Constants.IS_SECTION_A, isSectionA)
+                .whereEqualTo(Constants.IS_ACTIVE, true)
+                .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
+                    if (error != null) {
+                        Log.w(ContentValues.TAG, "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+
+                    val speakers = mutableListOf<Speaker>()
+                    for (speaker in value!!) {
+                        var speeches = listOf<String>()
+                        if (speaker.get(Constants.SPEECHES) != null) {
+                            @Suppress("UNCHECKED_CAST")
+                            speeches = speaker.data.getValue(Constants.SPEECHES) as List<String>
+                        }
+
+                        val newSpeaker = Speaker(
+                            speaker.id,
+                            speaker.getString(Constants.NAME)!!,
+                            speaker.getString(Constants.CONGREGATION)!!,
+                            speaker.getBoolean(Constants.IS_SECTION_A)!!,
+                            speeches,
+                            speaker.getString(Constants.OBSERVATIONS)!!,
+                            speaker.getBoolean(Constants.IS_ACTIVE)!!
+                        )
+                        speakers.add(newSpeaker)
+                    }
+                    trySend(Utils.organizedAlphabeticList(speakers))
+                }
+            awaitClose { request.remove() }
+        }
+    }
+
     fun saveSpeaker(speaker: Speaker) {
         val data = hashMapOf(
             Constants.NAME to speaker.name,

@@ -2,11 +2,11 @@ package com.skysam.speakers.ui.assign
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -55,6 +55,12 @@ class SecondFragment : Fragment(), OnClick {
         }
 
         subscribeObservers()
+
+        binding.tvTitle.setOnClickListener {
+            viewModel.setSection(false)
+            val selectSpeakerDialog = SelectSpeakerDialog()
+            selectSpeakerDialog.show(requireActivity().supportFragmentManager, tag)
+        }
     }
 
     override fun onDestroyView() {
