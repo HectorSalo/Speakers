@@ -11,9 +11,10 @@ import com.skysam.speakers.common.Speakers
 import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.SpeechToView
 import com.skysam.speakers.databinding.DialogViewDetailsSpeakerBinding
+import com.skysam.speakers.ui.speeches.OnClick
 import com.skysam.speakers.ui.speeches.SpeechesAdapter
 
-class ViewDetailsDialog: DialogFragment() {
+class ViewDetailsDialog: DialogFragment(), OnClick {
     private var _binding: DialogViewDetailsSpeakerBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SpeakersViewModel by activityViewModels()
@@ -22,7 +23,7 @@ class ViewDetailsDialog: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogViewDetailsSpeakerBinding.inflate(layoutInflater)
 
-        speechesAdapter = SpeechesAdapter(false)
+        speechesAdapter = SpeechesAdapter(viewSection = false, canSelect = false, onClick = this)
         binding.rvSpeeches.apply {
             setHasFixedSize(true)
             adapter = speechesAdapter
@@ -53,6 +54,7 @@ class ViewDetailsDialog: DialogFragment() {
                         val speechesToView = mutableListOf<SpeechToView>()
                         speeches.forEach { speech ->
                             val speechToView = SpeechToView(
+                                speech.position,
                                 speech.title,
                                 "",
                                 ""
@@ -85,5 +87,9 @@ class ViewDetailsDialog: DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun select(speechToView: SpeechToView) {
+
     }
 }

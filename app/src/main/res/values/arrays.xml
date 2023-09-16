@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="options_select">
+        <item>Asignar a Superintendente</item>
+        <item>Asignar a Representante</item>
+        <item>Asignar Sección A</item>
+        <item>Asignar Sección B</item>
+    </string-array>
+</resources>

@@ -10,11 +10,10 @@ import com.skysam.speakers.common.Speakers
 import com.skysam.speakers.dataClasses.SpeechToView
 import com.skysam.speakers.databinding.DialogViewSpeechesBinding
 
-class ViewSpeechesDialog: DialogFragment() {
+class ViewSpeechesDialog: DialogFragment(), OnClick {
     private var _binding: DialogViewSpeechesBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SpeechViewModel by activityViewModels()
-    private lateinit var speechesAdapter: SpeechesAdapter
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogViewSpeechesBinding.inflate(layoutInflater)
@@ -49,18 +48,23 @@ class ViewSpeechesDialog: DialogFragment() {
                             val sectionB = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
                             else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameB
                             val newSpeech = SpeechToView(
+                                speech.position,
                                 speech.title,
                                 sectionA,
                                 sectionB
                             )
                             speechesToView.add(newSpeech)
-                            if (speeches.last() == speech) {
-                                val speechesAdapter = SpeechesAdapter(true)
+                            if (speeches.size == speechesToView.size) {
+                                val speechesAdapter = SpeechesAdapter(
+                                    viewSection = true,
+                                    canSelect = false,
+                                    onClick = this
+                                )
                                 binding.rvSpeeches.apply {
                                     setHasFixedSize(true)
                                     adapter = speechesAdapter
                                 }
-                                speechesAdapter.updateList(speechesToView)
+                                speechesAdapter.updateList(speechesToView.sortedBy { spe -> spe.number })
                             }
                         }
                     }
@@ -72,5 +76,9 @@ class ViewSpeechesDialog: DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun select(speechToView: SpeechToView) {
+
     }
 }

@@ -22,6 +22,7 @@
     <string name="msg_exit_dialog">Se perderá toda la información.\n¿Desea salir?</string>
     <string name="msg_delete_dialog">¿Desea eliminar esta información?</string>
     <string name="text_details">Detalles</string>
+    <string name="text_select">Seleccionar</string>
 
     <!--Errors-->
     <string name="error_field_empty">Campo obligatorio</string>

@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.skysam.speakers.R
 import com.skysam.speakers.dataClasses.SpeechToView
 
-class SpeechesAdapter(private val viewSection: Boolean): RecyclerView.Adapter<SpeechesAdapter.ViewHolder>() {
+class SpeechesAdapter(private val viewSection: Boolean, private val canSelect: Boolean, private val onClick: OnClick):
+    RecyclerView.Adapter<SpeechesAdapter.ViewHolder>() {
     private lateinit var context: Context
     private var speeches = listOf<SpeechToView>()
 
@@ -35,6 +37,8 @@ class SpeechesAdapter(private val viewSection: Boolean): RecyclerView.Adapter<Sp
             holder.sectionA.visibility = View.GONE
             holder.sectionB.visibility = View.GONE
         }
+
+        if (canSelect) holder.card.setOnClickListener { onClick.select(item) }
     }
 
     override fun getItemCount(): Int = speeches.size
@@ -43,6 +47,7 @@ class SpeechesAdapter(private val viewSection: Boolean): RecyclerView.Adapter<Sp
         val title: TextView = view.findViewById(R.id.tv_title)
         val sectionA: TextView = view.findViewById(R.id.tv_section_a)
         val sectionB: TextView = view.findViewById(R.id.tv_section_b)
+        val card: MaterialCardView = view.findViewById(R.id.card)
     }
 
     fun updateList(newList: List<SpeechToView>) {

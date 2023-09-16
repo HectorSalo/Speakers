@@ -8,6 +8,7 @@ import com.skysam.speakers.dataClasses.Convention
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.dataClasses.Speech
 import com.skysam.speakers.repositories.Conventions
+import com.skysam.speakers.repositories.Speakers
 import com.skysam.speakers.repositories.Speeches
 
 /**
@@ -33,5 +34,9 @@ class AssignViewModel: ViewModel() {
 
     fun getSpeeches(convention: Convention): LiveData<List<Speech>> {
         return Speeches.getSpeechesByConvention(convention.id).asLiveData()
+    }
+
+    fun getSpeakers(speech: Speech): LiveData<List<Speaker>> {
+        return Speakers.getSpeakersBySpeech(speech.id).asLiveData()
     }
 }
