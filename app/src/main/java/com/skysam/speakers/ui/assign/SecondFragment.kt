@@ -55,12 +55,6 @@ class SecondFragment : Fragment(), OnClick {
         }
 
         subscribeObservers()
-
-        binding.tvTitle.setOnClickListener {
-            viewModel.setSection(false)
-            val selectSpeakerDialog = SelectSpeakerDialog()
-            selectSpeakerDialog.show(requireActivity().supportFragmentManager, tag)
-        }
     }
 
     override fun onDestroyView() {
@@ -118,8 +112,16 @@ class SecondFragment : Fragment(), OnClick {
 
                     }
                     1 -> {}
-                    2 -> {}
-                    3 -> {}
+                    2 -> {
+                        viewModel.setSection(true)
+                        val selectSpeakerDialog = SelectSpeakerDialog()
+                        selectSpeakerDialog.show(requireActivity().supportFragmentManager, tag)
+                    }
+                    3 -> {
+                        viewModel.setSection(false)
+                        val selectSpeakerDialog = SelectSpeakerDialog()
+                        selectSpeakerDialog.show(requireActivity().supportFragmentManager, tag)
+                    }
                 }
             }
         builder.create()
