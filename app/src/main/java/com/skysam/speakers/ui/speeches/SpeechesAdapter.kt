@@ -28,7 +28,7 @@ class SpeechesAdapter(private val viewSection: Boolean, private val canSelect: B
         holder.title.text = item.title
         if (viewSection) {
             holder.sectionA.text = if (item.sectionA.isNotEmpty())
-                "${context.getString(R.string.text_section_b)}: ${item.sectionA}"
+                "${context.getString(R.string.text_section_a)}: ${item.sectionA}"
             else context.getString(R.string.text_not_speech_assing)
             holder.sectionB.text = if (item.sectionB.isNotEmpty())
                 "${context.getString(R.string.text_section_b)}: ${item.sectionB}"

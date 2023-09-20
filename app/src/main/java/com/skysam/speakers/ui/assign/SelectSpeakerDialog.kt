@@ -59,35 +59,20 @@ class SelectSpeakerDialog: DialogFragment(), OnClick {
         viewModel.isSectionA.observe(this.requireActivity()) {isSectionAFrom ->
             if (_binding != null) {
                 viewModel.getSpeakersBySection(isSectionAFrom).observe(this.requireActivity()) {speakers ->
-                    if (speakers.isEmpty()) {
-                        binding.rvSpeakers.visibility = View.GONE
-                        binding.tvListEmpty.visibility = View.VISIBLE
-                        binding.progressBar.visibility = View.GONE
-                    } else {
-                        val speakersToView = mutableListOf<SpeakerToView>()
-                        for (speaker in speakers) {
-                            if (speaker.speeches.isEmpty()) {
-                                val newSp = SpeakerToView(
-                                    speaker.id,
-                                    speaker.name,
-                                    speaker.congregation,
-                                    null,
-                                    speaker.observations
-                                )
-                                speakersToView.add(newSp)
-                                if (speakersToView.size == speakers.size) {
-                                    selectSpeakerAdapter.updateList(speakersToView.sortedBy { speakerL-> speakerL.lastDate })
-                                    binding.rvSpeakers.visibility = View.VISIBLE
-                                    binding.tvListEmpty.visibility = View.GONE
-                                    binding.progressBar.visibility = View.GONE
-                                }
-                            } else {
-                                viewModel.getLastConventionFromSpeaker(speaker).observe(this.requireActivity()) { convention ->
+                    if (_binding != null) {
+                        if (speakers.isEmpty()) {
+                            binding.rvSpeakers.visibility = View.GONE
+                            binding.tvListEmpty.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.GONE
+                        } else {
+                            val speakersToView = mutableListOf<SpeakerToView>()
+                            for (speaker in speakers) {
+                                if (speaker.speeches.isEmpty()) {
                                     val newSp = SpeakerToView(
                                         speaker.id,
                                         speaker.name,
                                         speaker.congregation,
-                                        if (isSectionAFrom) convention.dateA else convention.dateB,
+                                        null,
                                         speaker.observations
                                     )
                                     speakersToView.add(newSp)
@@ -96,6 +81,23 @@ class SelectSpeakerDialog: DialogFragment(), OnClick {
                                         binding.rvSpeakers.visibility = View.VISIBLE
                                         binding.tvListEmpty.visibility = View.GONE
                                         binding.progressBar.visibility = View.GONE
+                                    }
+                                } else {
+                                    viewModel.getLastConventionFromSpeaker(speaker).observe(this.requireActivity()) { convention ->
+                                        val newSp = SpeakerToView(
+                                            speaker.id,
+                                            speaker.name,
+                                            speaker.congregation,
+                                            if (isSectionAFrom) convention.dateA else convention.dateB,
+                                            speaker.observations
+                                        )
+                                        speakersToView.add(newSp)
+                                        if (speakersToView.size == speakers.size) {
+                                            selectSpeakerAdapter.updateList(speakersToView.sortedBy { speakerL-> speakerL.lastDate })
+                                            binding.rvSpeakers.visibility = View.VISIBLE
+                                            binding.tvListEmpty.visibility = View.GONE
+                                            binding.progressBar.visibility = View.GONE
+                                        }
                                     }
                                 }
                             }
@@ -107,6 +109,7 @@ class SelectSpeakerDialog: DialogFragment(), OnClick {
     }
 
     override fun select(speakerToView: SpeakerToView) {
-
+        dismiss()
+        viewModel.selectSpeakerDialog(speakerToView)
     }
 }

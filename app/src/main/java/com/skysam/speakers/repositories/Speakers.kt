@@ -3,6 +3,7 @@ package com.skysam.speakers.repositories
 import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
 import com.skysam.speakers.common.Constants
@@ -166,5 +167,16 @@ object Speakers {
         getInstance()
             .document(speaker.id)
             .delete()
+    }
+
+    fun assignSpeaker(idSpeakers: List<Speaker>, idSpeech: String, id: String) {
+        for (idS in idSpeakers) {
+            getInstance()
+                .document(idS.id)
+                .update(Constants.SPEECHES, FieldValue.arrayRemove(idSpeech))
+        }
+        getInstance()
+            .document(id)
+            .update(Constants.SPEECHES, FieldValue.arrayUnion(idSpeech))
     }
 }

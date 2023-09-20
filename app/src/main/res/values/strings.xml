@@ -57,6 +57,7 @@
     <!--Assign-->
     <string name="title_select_convention">Seleccione la Asamblea</string>
     <string name="text_no_convention_to_assign">Asambleas concluidas. No hay disponibles para asignar</string>
+    <string name="message_dialog_assign">¿Desea asignar %1$s a %2$s?</string>
 
     <!--View Speeches-->
     <string name="text_not_speech_assing">No asignado</string>

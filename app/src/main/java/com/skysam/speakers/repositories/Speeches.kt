@@ -115,12 +115,18 @@ object Speeches {
     fun assignToViajante(speech: Speech) {
         getInstance()
             .document(speech.id)
-            .update(Constants.IS_VIAJANTE, true)
+            .update(Constants.IS_VIAJANTE, true, Constants.IS_REPRESENTANTE, false)
     }
 
     fun assignToRepresentante(speech: Speech) {
         getInstance()
             .document(speech.id)
-            .update(Constants.IS_REPRESENTANTE, true)
+            .update(Constants.IS_REPRESENTANTE, true, Constants.IS_VIAJANTE, false)
+    }
+
+    fun assignSpeaker(id: String) {
+        getInstance()
+            .document(id)
+            .update(Constants.IS_REPRESENTANTE, false, Constants.IS_VIAJANTE, false)
     }
 }

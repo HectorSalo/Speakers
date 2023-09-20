@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.skysam.speakers.R
 import com.skysam.speakers.common.Constants
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.databinding.FragmentSpeakersBinding
@@ -90,6 +92,15 @@ class SpeakersFragment : Fragment(), OnClick {
     }
 
     override fun delete(speaker: Speaker) {
-        viewModel.deleteSpeaker(speaker)
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle(getString(R.string.text_confirm))
+            .setMessage(getString(R.string.msg_delete_dialog))
+            .setPositiveButton(R.string.text_delete) { _, _ ->
+                viewModel.deleteSpeaker(speaker)
+            }
+            .setNegativeButton(R.string.text_cancel, null)
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }

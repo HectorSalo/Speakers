@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private val viewModelSpeech: SpeechViewModel by activityViewModels()
     private var speeches = listOf<Speech>()
-    private val speakers = listOf<Speaker>()
+    private var speakers = listOf<Speaker>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,10 +50,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun subscribeObservers() {
+        viewModel.speakers.observe(viewLifecycleOwner) {
+            if (_binding != null) speakers = it
+        }
         viewModel.speeches.observe(viewLifecycleOwner) {
-            if (_binding != null) {
-                speeches = it
-            }
+            if (_binding != null)  speeches = it
         }
         viewModel.conventions.observe(viewLifecycleOwner) {
             if (_binding != null) {
@@ -75,11 +76,18 @@ class HomeFragment : Fragment() {
         else "${Utils.convertDateToString(convention.dateA!!)} / ${Utils.convertDateToString(convention.dateB!!)}"
         val speechesFromConvention = mutableListOf<Speech>()
         for (speech in speeches) {
-            if (speech.conventionId == convention.id) {
+            if (speech.conventionId == convention.id && !speech.isRepresentante && !speech.isViajante) {
                 speechesFromConvention.add(speech)
             }
         }
-        val totalSpeakers = speakers.size
+        var totalSpeakers = 0
+        speechesFromConvention.forEach {
+            for (speak in speakers) {
+                if (speak.speeches.contains(it.id)) {
+                    totalSpeakers += 1
+                }
+            }
+        }
 
         val totalSpeeches = speechesFromConvention.size * 2
 
@@ -122,11 +130,19 @@ class HomeFragment : Fragment() {
         else "${Utils.convertDateToString(convention.dateA!!)} / ${Utils.convertDateToString(convention.dateB!!)}"
         val speechesFromConvention = mutableListOf<Speech>()
         for (speech in speeches) {
-            if (speech.conventionId == convention.id) {
+            if (speech.conventionId == convention.id && !speech.isRepresentante && !speech.isViajante) {
                 speechesFromConvention.add(speech)
             }
         }
-        val totalSpeakers = speakers.size
+        var totalSpeakers = 0
+        speechesFromConvention.forEach {
+            for (speak in speakers) {
+                if (speak.speeches.contains(it.id)) {
+                    totalSpeakers += 1
+                }
+            }
+        }
+        
         val totalSpeeches = speechesFromConvention.size * 2
 
         if (totalSpeeches == totalSpeakers) {

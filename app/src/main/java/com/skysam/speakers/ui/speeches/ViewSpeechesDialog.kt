@@ -2,6 +2,7 @@ package com.skysam.speakers.ui.speeches
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -18,12 +19,21 @@ class ViewSpeechesDialog: DialogFragment(), OnClick {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogViewSpeechesBinding.inflate(layoutInflater)
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                dismiss()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
         subscribeViewModel()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(getString(R.string.app_name))
             .setView(binding.root)
-            .setPositiveButton(R.string.text_accept, null)
+            .setPositiveButton(R.string.text_accept) {_, _ ->
+                dismiss()
+            }
 
         val dialog = builder.create()
         dialog.show()

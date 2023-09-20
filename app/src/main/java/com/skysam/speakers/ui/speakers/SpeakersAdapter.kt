@@ -39,6 +39,8 @@ class SpeakersAdapter(private val onClick: OnClick): RecyclerView.Adapter<Speake
    val popMenu = PopupMenu(context, holder.card)
    popMenu.inflate(R.menu.menu_speaker_item)
 
+   popMenu.menu.getItem(1).isVisible = item.isActive
+
    popMenu.menu.getItem(3).title = if (item.isActive) context.getString(R.string.text_desable)
    else context.getString(R.string.text_enable)
 
