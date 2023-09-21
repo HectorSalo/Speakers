@@ -14,4 +14,15 @@ class HomeViewModel : ViewModel() {
     val speakers: LiveData<List<Speaker>> = Speakers.getSpeakers().asLiveData()
     val speeches: LiveData<List<Speech>> = Speeches.getSpeeches().asLiveData()
     val conventions: LiveData<List<Convention>> = Conventions.getCurrentConventions().asLiveData()
+
+    fun addConvention() {
+        Conventions.addConvention()
+    }
+    fun addSpeech() {
+        Speeches.addSpeech()
+    }
+
+    fun associateSpeeches() {
+        Speeches.getSpeechesToAssociate()
+    }
 }

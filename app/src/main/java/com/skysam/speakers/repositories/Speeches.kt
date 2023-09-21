@@ -21,7 +21,8 @@ object Speeches {
     }
 
     private fun getInstance(): CollectionReference {
-        return FirebaseFirestore.getInstance().collection(PATH)
+        //return FirebaseFirestore.getInstance().collection(PATH)
+        return FirebaseFirestore.getInstance().collection("speeches")
     }
 
     fun getSpeeches(): Flow<List<Speech>> {
@@ -128,5 +129,33 @@ object Speeches {
         getInstance()
             .document(id)
             .update(Constants.IS_REPRESENTANTE, false, Constants.IS_VIAJANTE, false)
+    }
+
+    fun addSpeech() {
+        val data = hashMapOf(
+            Constants.TITLE to "Si servimos a Jehová, seremos felices",
+            Constants.POSITION to 12,
+            Constants.IS_VIAJANTE to false,
+            Constants.IS_REPRESENTANTE to false,
+            Constants.ID_CONVENTION to "wgpccyzCClwk6uJuXSmC"
+        )
+        FirebaseFirestore.getInstance().collection("speeches")
+            .add(data)
+    }
+
+    fun getSpeechesToAssociate() {
+        FirebaseFirestore.getInstance().collection("speeches")
+            .whereEqualTo(Constants.ID_CONVENTION, "wgpccyzCClwk6uJuXSmC")
+            .get()
+            .addOnSuccessListener { documents ->
+                val list = mutableListOf<String>()
+                for (document in documents) {
+                    list.add(document.id)
+                }
+                Conventions.associateSpeeches("wgpccyzCClwk6uJuXSmC", list)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
     }
 }

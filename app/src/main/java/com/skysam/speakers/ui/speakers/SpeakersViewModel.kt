@@ -12,9 +12,7 @@ import com.skysam.speakers.repositories.Speakers
 import com.skysam.speakers.repositories.Speeches
 
 class SpeakersViewModel : ViewModel() {
-    val conventions: LiveData<List<Convention>> = Conventions.getConventions().asLiveData()
     val speakers: LiveData<List<Speaker>> = Speakers.getSpeakers().asLiveData()
-    val speeches: LiveData<List<Speech>> = Speeches.getSpeeches().asLiveData()
 
     private val _speakerToUpdate = MutableLiveData<Speaker>()
     val speakerToUpdate: LiveData<Speaker> get() = _speakerToUpdate

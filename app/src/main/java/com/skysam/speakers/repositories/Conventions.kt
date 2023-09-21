@@ -1,6 +1,5 @@
 package com.skysam.speakers.repositories
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
@@ -27,15 +26,17 @@ object Conventions {
  }
 
  private fun getInstance(): CollectionReference {
-  return FirebaseFirestore.getInstance().collection(PATH)
+  //return FirebaseFirestore.getInstance().collection(PATH)
+  return FirebaseFirestore.getInstance().collection("conventions")
  }
 
  fun getConventions(): Flow<List<Convention>> {
   return callbackFlow {
    val request = getInstance()
+    .orderBy(Constants.DATE_A, Query.Direction.ASCENDING)
     .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
      if (error != null) {
-      Log.w(ContentValues.TAG, "Listen failed.", error)
+      Log.w(TAG, "Listen failed.", error)
       return@addSnapshotListener
      }
 
@@ -70,7 +71,7 @@ object Conventions {
     .whereEqualTo(Constants.CURRENT, true)
     .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
      if (error != null) {
-      Log.w(ContentValues.TAG, "Listen failed.", error)
+      Log.w(TAG, "Listen failed.", error)
       return@addSnapshotListener
      }
 
@@ -103,10 +104,9 @@ object Conventions {
   return callbackFlow {
    val request = getInstance()
     .whereEqualTo(Constants.CURRENT, true)
-    .whereGreaterThan(Constants.DATE_A, Date())
     .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
      if (error != null) {
-      Log.w(ContentValues.TAG, "Listen failed.", error)
+      Log.w(TAG, "Listen failed.", error)
       return@addSnapshotListener
      }
 
@@ -176,5 +176,24 @@ object Conventions {
    .document(convention.id)
    .update(Constants.DATE_A, convention.dateA,
     Constants.DATE_B, convention.dateB)
+ }
+
+ fun addConvention() {
+  val data = hashMapOf(
+   Constants.TITLE to "Entremos en el descanso de Dios",
+   Constants.DATE_A to null,
+   Constants.DATE_B to null,
+   Constants.CURRENT to true,
+   Constants.IMAGE to "",
+   Constants.SPEECHES to listOf<String>()
+  )
+  FirebaseFirestore.getInstance().collection("conventions")
+   .add(data)
+ }
+
+ fun associateSpeeches(id: String, speeches: List<String>) {
+  FirebaseFirestore.getInstance().collection("conventions")
+   .document(id)
+   .update(Constants.SPEECHES, speeches)
  }
 }

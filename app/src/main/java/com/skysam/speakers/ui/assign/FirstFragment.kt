@@ -16,6 +16,7 @@ import com.skysam.speakers.common.Utils
 import com.skysam.speakers.dataClasses.Convention
 import com.skysam.speakers.dataClasses.Speaker
 import com.skysam.speakers.databinding.FragmentFirstBinding
+import java.util.Date
 
 
 class FirstFragment : Fragment() {
@@ -82,18 +83,17 @@ class FirstFragment : Fragment() {
                     binding.tvTitle.text = getString(R.string.text_no_convention_to_assign)
                     return@observe
                 }
-                if (it.size > 1) {
-                    fillConventionA(it[0])
-                    fillConventionB(it[1])
-                } else {
-                    fillConventionA(it[0])
-                    binding.card2.visibility = View.GONE
-                }
+                fillConventionA(it[0])
+                fillConventionB(it[1])
             }
         }
     }
 
     private fun fillConventionA(convention: Convention) {
+        if (convention.dateB != null && convention.dateB!!.before(Date())) {
+            binding.card1.visibility = View.GONE
+            return
+        }
         Glide.with(requireContext())
             .load(convention.image)
             .centerCrop()
@@ -111,6 +111,10 @@ class FirstFragment : Fragment() {
     }
 
     private fun fillConventionB(convention: Convention) {
+        if (convention.dateB != null && convention.dateB!!.before(Date())) {
+            binding.card2.visibility = View.GONE
+            return
+        }
         Glide.with(requireContext())
             .load(convention.image)
             .centerCrop()

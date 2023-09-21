@@ -62,6 +62,9 @@ class HomeFragment : Fragment() {
                 fillConventionB(it[1])
             }
         }
+        //viewModel.addConvention()
+        //viewModel.addSpeech()
+        //viewModel.associateSpeeches()
     }
 
     private fun fillConventionA(convention: Convention) {

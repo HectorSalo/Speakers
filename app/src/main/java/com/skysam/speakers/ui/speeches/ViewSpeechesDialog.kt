@@ -2,7 +2,6 @@ package com.skysam.speakers.ui.speeches
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -18,13 +17,6 @@ class ViewSpeechesDialog: DialogFragment(), OnClick {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogViewSpeechesBinding.inflate(layoutInflater)
-
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                dismiss()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         subscribeViewModel()
 
@@ -45,36 +37,40 @@ class ViewSpeechesDialog: DialogFragment(), OnClick {
         viewModel.convention.observe(this.requireActivity()) {
             if (_binding != null) {
                 viewModel.getSpeeches(it).observe(this.requireActivity()) {speeches ->
-                    val speechesToView = mutableListOf<SpeechToView>()
-                    for (speech in speeches) {
-                        viewModel.getSpeakers(speech).observe(this.requireActivity()) {speakers ->
-                            var nameA = ""
-                            var nameB = ""
-                            speakers.forEach {speak ->
-                                if (speak.isSectionA) nameA = speak.name else nameB = speak.name
-                            }
-                            val sectionA = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
-                            else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameA
-                            val sectionB = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
-                            else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameB
-                            val newSpeech = SpeechToView(
-                                speech.position,
-                                speech.title,
-                                sectionA,
-                                sectionB
-                            )
-                            speechesToView.add(newSpeech)
-                            if (speeches.size == speechesToView.size) {
-                                val speechesAdapter = SpeechesAdapter(
-                                    viewSection = true,
-                                    canSelect = false,
-                                    onClick = this
-                                )
-                                binding.rvSpeeches.apply {
-                                    setHasFixedSize(true)
-                                    adapter = speechesAdapter
+                    if (_binding != null) {
+                        val speechesToView = mutableListOf<SpeechToView>()
+                        for (speech in speeches) {
+                            viewModel.getSpeakers(speech).observe(this.requireActivity()) {speakers ->
+                                if (_binding != null) {
+                                    var nameA = ""
+                                    var nameB = ""
+                                    speakers.forEach {speak ->
+                                        if (speak.isSectionA) nameA = speak.name else nameB = speak.name
+                                    }
+                                    val sectionA = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
+                                    else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameA
+                                    val sectionB = if (speech.isViajante) Speakers.Speakers.getContext().getString(R.string.text_viajante)
+                                    else if (speech.isRepresentante) Speakers.Speakers.getContext().getString(R.string.text_representante) else nameB
+                                    val newSpeech = SpeechToView(
+                                        speech.position,
+                                        speech.title,
+                                        sectionA,
+                                        sectionB
+                                    )
+                                    speechesToView.add(newSpeech)
+                                    if (speeches.size == speechesToView.size) {
+                                        val speechesAdapter = SpeechesAdapter(
+                                            viewSection = true,
+                                            canSelect = false,
+                                            onClick = this
+                                        )
+                                        binding.rvSpeeches.apply {
+                                            setHasFixedSize(true)
+                                            adapter = speechesAdapter
+                                        }
+                                        speechesAdapter.updateList(speechesToView.sortedBy { spe -> spe.number })
+                                    }
                                 }
-                                speechesAdapter.updateList(speechesToView.sortedBy { spe -> spe.number })
                             }
                         }
                     }
